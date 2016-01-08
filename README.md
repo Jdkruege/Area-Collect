@@ -1,2 +1,1 @@
-# Small-Games-Collection
-A set of small games I've made
+A git repo for making small games and setting them up in a small collection you can play them all in.
