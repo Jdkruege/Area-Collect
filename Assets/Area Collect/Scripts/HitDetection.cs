@@ -3,10 +3,14 @@ using System.Collections;
 
 public class HitDetection : MonoBehaviour
 {
-    public State _state;
+    public GameState _state;
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Player") _state.playerHit();
+        if (GetComponentInParent<ObjectiveState>().active)
+        {
+            if (other.tag == "Alive Player") _state.playerHit();
+        }
+        
     }
 }
