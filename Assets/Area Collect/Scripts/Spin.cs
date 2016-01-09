@@ -9,22 +9,10 @@ public class Spin : MonoBehaviour {
     public float _spd;
     public float _dir;
 
-    public Spin(float speed, Direction direction)
+    public void set(float speed, float direction)
     {
         _spd = speed;
-
-        switch(direction)
-        {
-            case Direction.Left:
-                _dir = 1;
-                break;
-            case Direction.Right:
-                _dir = -1;
-                break;
-            default:
-                _dir = 0;
-                break;
-        }
+        _dir = direction;
     }
 
 	// Update is called once per frame

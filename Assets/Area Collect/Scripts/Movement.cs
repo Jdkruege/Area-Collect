@@ -8,10 +8,9 @@ public class Movement : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKey(KeyCode.W) == true) velocity.y += MOVEMENT_VALUE;
-        if (Input.GetKey(KeyCode.S) == true) velocity.y -= MOVEMENT_VALUE;
-        if (Input.GetKey(KeyCode.A) == true) velocity.x -= MOVEMENT_VALUE;
-        if (Input.GetKey(KeyCode.D) == true) velocity.x += MOVEMENT_VALUE;	
+
+        velocity.x += MOVEMENT_VALUE * Input.GetAxis("Horizontal");
+        velocity.y += MOVEMENT_VALUE * Input.GetAxis("Vertical");	
 	}
 
     void FixedUpdate()
