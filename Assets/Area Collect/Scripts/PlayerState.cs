@@ -5,6 +5,8 @@ public class PlayerState : MonoBehaviour {
 
     public float deathTime;
 
+    public GameState state;
+
     public void PlayerDead()
     {
         tag = "Dead Player";
@@ -20,6 +22,8 @@ public class PlayerState : MonoBehaviour {
 
         while (Time.time < deathTimer)
         {
+            if (state.paused || state.gameOver) deathTimer += (deathTime - (deathTimer - Time.time));
+
             yield return null;
         }
 
@@ -30,5 +34,11 @@ public class PlayerState : MonoBehaviour {
     {
         GetComponent<Renderer>().material.color = new Color(1, 1, 1); // Restores player's color to indicate them being alive again
         tag = "Alive Player";
+    }
+
+    void Update()
+    {
+        if (state.paused || state.gameOver) GetComponentInParent<Movement>().pause = true;
+        else GetComponentInParent<Movement>().pause = false;
     }
 }

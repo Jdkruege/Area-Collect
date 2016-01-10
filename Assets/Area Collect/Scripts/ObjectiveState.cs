@@ -7,6 +7,8 @@ public class ObjectiveState : MonoBehaviour {
     public float fadeSpeed;
     public float spawnTime;
 
+    public GameState state;
+
 	public void Spawn(float time)
     {
         active = false;
@@ -25,7 +27,7 @@ public class ObjectiveState : MonoBehaviour {
 
         while (fade < 10)
         {
-            if (Time.time > fadeTime)
+            if (Time.time > fadeTime && !(state.paused || state.gameOver))
             {
                 GetComponentInChildren<Renderer>().material.color = new Color(1, 1, 1, 1 * (fade / 10));
 
@@ -43,5 +45,11 @@ public class ObjectiveState : MonoBehaviour {
     {
         GetComponentInChildren<Renderer>().material.color = new Color(1, 1, 1, 1);
         active = true;
+    }
+
+    void Update()
+    {
+        if (state.paused || state.gameOver) GetComponentInParent<Spin>().pause = true;
+        else GetComponentInParent<Spin>().pause = false;
     }
 }

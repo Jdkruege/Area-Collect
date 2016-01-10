@@ -9,6 +9,8 @@ public class Spin : MonoBehaviour {
     public float _spd;
     public float _dir;
 
+    public bool pause = false;
+
     public void set(float speed, float direction)
     {
         _spd = speed;
@@ -17,7 +19,6 @@ public class Spin : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        
-        transform.Rotate(new Vector3(0, 0, 1), ROTATION_AMOUNT*_spd*_dir);
+        if (!pause) transform.Rotate(new Vector3(0, 0, 1), ROTATION_AMOUNT*_spd*_dir);
 	}
 }

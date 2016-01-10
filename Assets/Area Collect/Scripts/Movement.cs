@@ -7,9 +7,11 @@ public class Movement : MonoBehaviour {
 
     Vector2 velocity;
 
+    public bool pause = false;
+
 	// Update is called once per frame
 	void Update () {
-        velocity = new Vector2(Input.GetAxis("Mouse X")*MOVEMENT_VALUE, Input.GetAxis("Mouse Y")*MOVEMENT_VALUE);
+        if(!pause) velocity = new Vector2(Input.GetAxis("Mouse X")*MOVEMENT_VALUE, Input.GetAxis("Mouse Y")*MOVEMENT_VALUE);
 	}
 
     void FixedUpdate()

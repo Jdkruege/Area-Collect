@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameState : MonoBehaviour {
     
@@ -21,39 +22,58 @@ public class GameState : MonoBehaviour {
     public float spawnRate;
     private float _NextSpawn = 0f;
 
+    public GameObject pauseHUD;
+    public GameObject endHUD;
+
     private int _score = 0;
     private int _lives = 5;
     private int _uID = 0;
     private int _numSpawned = 0;
 
-    private bool _gameOver = false;
+    public bool gameOver = false;
+    public bool paused = false;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        player.GetComponent<PlayerState>().state = this;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) Cursor.visible = !Cursor.visible;
-
-        if ((Time.time > _NextSpawn && _numSpawned < SPAWN_MAX) || (_numSpawned < SPAWN_MIN))
+        if (Input.GetKeyDown(KeyCode.Escape) && !gameOver)
         {
-            spawn();
-            _NextSpawn = Time.time + spawnRate;
-            _numSpawned++;
+            Cursor.visible = !Cursor.visible;
+            paused = !paused;
+            pauseHUD.SetActive(paused);
         }
 
-        HandleTime();
+        if (!gameOver && !paused)
+        {
+            if ((Time.time > _NextSpawn && _numSpawned < SPAWN_MAX) || (_numSpawned < SPAWN_MIN))
+            {
+                spawn();
+                _NextSpawn = Time.time + spawnRate;
+                _numSpawned++;
+            }
 
+            HandleTime();
+        }
 
-        if (_gameOver) Debug.Log("Game is technically over."); // Game end logic follows here.
+        if(gameOver && !paused)
+        {
+            endHUD.SetActive(true);
+            Cursor.visible = !Cursor.visible;
+            paused = true;
+        }
+
     }
 
     public void HandleTime()
     {
-        if (Time.time > timeLimit) _gameOver = true;
+        if (Time.time > timeLimit) gameOver = true;
 
         timerText.text = "" + Mathf.Ceil(timeLimit - Time.time);
     }
@@ -71,7 +91,7 @@ public class GameState : MonoBehaviour {
 
         player.GetComponent<PlayerState>().PlayerDead();
 
-        if (_lives >= 0) _gameOver = true;
+        if (_lives <= 0) gameOver = true;
     }
 
     public void respawn(GameObject obj)
@@ -97,9 +117,15 @@ public class GameState : MonoBehaviour {
 
         obj.GetComponent<Spin>().set(spd, dir);
 
-        obj.GetComponentInChildren<HitDetection>()._state = this;
-        obj.GetComponentInChildren<GoalDetection>()._state = this;
-        obj.GetComponentInChildren<SpawnDetection>()._state = this;
+        obj.GetComponentInChildren<HitDetection>().state = this;
+        obj.GetComponentInChildren<GoalDetection>().state = this;
+        obj.GetComponentInChildren<SpawnDetection>().state = this;
+        obj.GetComponent<ObjectiveState>().state = this;
         obj.GetComponent<ObjectiveState>().Spawn(Time.time);
+    }
+
+    public void Exit()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }

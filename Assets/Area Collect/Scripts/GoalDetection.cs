@@ -3,16 +3,32 @@ using System.Collections;
 
 public class GoalDetection : MonoBehaviour {
 
-    public GameState _state;
+    public GameState state;
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (GetComponentInParent<ObjectiveState>().active)
+        if (GetComponentInParent<ObjectiveState>().active && !(state.paused || state.gameOver))
         {
             if (other.tag == "Alive Player")
             {
-                _state.pointScored();
+                state.pointScored();
                 Destroy(transform.parent.gameObject);
+
+                
+            }
+        }
+    }
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if (GetComponentInParent<ObjectiveState>().active && !(state.paused || state.gameOver))
+        {
+            if (other.tag == "Alive Player")
+            {
+                state.pointScored();
+                Destroy(transform.parent.gameObject);
+
+
             }
         }
     }
