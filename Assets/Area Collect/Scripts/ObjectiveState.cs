@@ -7,6 +7,8 @@ public class ObjectiveState : MonoBehaviour {
     public float fadeSpeed;
     public float spawnTime;
 
+    private Color _color;
+
     public GameState state;
 
 	public void Spawn(float time)
@@ -15,7 +17,9 @@ public class ObjectiveState : MonoBehaviour {
 
         spawnTime = time;
 
-        GetComponentInChildren<Renderer>().material.color = new Color(0, 0, 0, 0);
+        _color = GetComponentInChildren<Renderer>().material.color;
+        _color.a = 0;
+        GetComponentInChildren<Renderer>().material.color = _color;
 
         StartCoroutine("Spawning");
     }
@@ -29,7 +33,9 @@ public class ObjectiveState : MonoBehaviour {
         {
             if (Time.time > fadeTime && !(state.paused || state.gameOver))
             {
-                GetComponentInChildren<Renderer>().material.color = new Color(1, 1, 1, 1 * (fade / 10));
+                _color.a = 1 * (fade / 10);
+
+                GetComponentInChildren<Renderer>().material.color = _color;
 
                 fadeTime = Time.time + fadeSpeed / 10;
                 fade++;
@@ -43,7 +49,8 @@ public class ObjectiveState : MonoBehaviour {
 
     public void Activate()
     {
-        GetComponentInChildren<Renderer>().material.color = new Color(1, 1, 1, 1);
+        _color.a = 1;
+        GetComponentInChildren<Renderer>().material.color = _color;
         active = true;
     }
 

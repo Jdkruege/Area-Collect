@@ -117,11 +117,22 @@ public class GameState : MonoBehaviour {
 
         obj.GetComponent<Spin>().set(spd, dir);
 
+        obj.GetComponentInChildren<Renderer>().material.color = randomColor();
+
         obj.GetComponentInChildren<HitDetection>().state = this;
         obj.GetComponentInChildren<GoalDetection>().state = this;
         obj.GetComponentInChildren<SpawnDetection>().state = this;
         obj.GetComponent<ObjectiveState>().state = this;
         obj.GetComponent<ObjectiveState>().Spawn(Time.time);
+    }
+
+    public Color randomColor()
+    {
+        float r = Random.Range(0f, .75f);
+        float g = Random.Range(0f, .75f);
+        float b = Random.Range(0f, .75f);
+
+        return new Color(r, g, b);
     }
 
     public void Exit()
