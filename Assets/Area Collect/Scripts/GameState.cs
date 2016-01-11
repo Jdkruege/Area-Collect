@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class GameState : MonoBehaviour {
     
@@ -9,7 +10,7 @@ public class GameState : MonoBehaviour {
     private const int SPAWN_MAX = 8;
 
     public GameObject player;
-    public GameObject toSpawn;
+    public List<GameObject> spawnList;
 
     public Text scoreText;
     public Text timerText;
@@ -102,7 +103,7 @@ public class GameState : MonoBehaviour {
 
     public void spawn()
     {
-        GameObject obj = Instantiate(toSpawn);
+        GameObject obj = Instantiate(spawnList[Random.Range(0, spawnList.Count)]);
 
         obj.name = "Objective " + _uID++;
 
