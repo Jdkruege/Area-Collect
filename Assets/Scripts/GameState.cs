@@ -138,6 +138,6 @@ public class GameState : MonoBehaviour {
 
     public void Exit()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("Main");
     }
 }
